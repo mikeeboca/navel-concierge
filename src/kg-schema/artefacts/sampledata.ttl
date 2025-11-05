@@ -1,0 +1,74 @@
+@prefix pk: <https://kg.beispiel.org/pflege40#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+pk:p_InaCzyborra a pk:Person ;
+                 pk:hatTitel "Dr. Ina Czyborra" ;
+                 pk:hatBeschreibung "Berliner Senatorin für Wissenschaft, Gesundheit und Pflege" ;
+                 pk:hatURL "https://www.lebenpflegedigital.de/" .
+
+pk:p_MartinKlein a pk:Person ;
+                 pk:hatTitel "Martin Klein" ;
+                 pk:hatBeschreibung "Projektleiter Pflege 4.0" .
+
+pk:p_JuliaSeitz a pk:Person ;
+                pk:hatTitel "Julia Seitz" ;
+                pk:hatBeschreibung "Wissenschaftliche Mitarbeiterin TU Berlin" .
+
+pk:org_TUBerlin a pk:Organisation ;
+                pk:hatTitel "DAI-Labor, TU Berlin" ;
+                pk:hatURL "https://www.tu.berlin/dai-labor" .
+
+pk:org_ZeTT a pk:Organisation ;
+            pk:hatTitel "Zentrum für Telematik und Telemedizin" ;
+            pk:hatURL "https://zett.de" .
+
+pk:tech_Sturzsensor a pk:Sensorik ;
+                    pk:hatTitel "Sturzerkennungssensor" ;
+                    pk:hatBeschreibung "Erkennt Stürze im häuslichen Umfeld" .
+
+pk:tech_PflegeApp a pk:Assistenzsystem ;
+                  pk:hatTitel "PflegeApp Pro" ;
+                  pk:hatBeschreibung "Dokumentiert Pflegeleistungen mobil" .
+
+pk:kat_Begriffserklaerung a pk:Kategorie ;
+                          pk:hatTitel "Begriffserklärung" .
+
+pk:kat_Einrichtung a pk:Kategorie ;
+                   pk:hatTitel "Digitale Einrichtung" .
+
+pk:ort_Berlin a pk:Ort ;
+              pk:hatTitel "Berlin" .
+
+pk:ort_Bochum a pk:Ort ;
+              pk:hatTitel "Bochum" .
+
+pk:event_EHealthSalon2025 a pk:VirtuelleTour ;
+                          pk:hatTitel "E-Health-Salon 2025" ;
+                          pk:hatDatum "2025-09-25"^^xsd:date ;
+                          pk:wirdDurchgefuehrtVon pk:org_TUBerlin ;
+                          pk:findetStattIn pk:ort_Berlin ;
+                          pk:behandeltKategorie pk:kat_Begriffserklaerung ;
+                          pk:hatURL "https://www.lebenpflegedigital.de/salon2025" .
+
+pk:event_TagDerPflege a pk:Event ;
+                      pk:hatTitel "Tag der Pflege" ;
+                      pk:hatDatum "2025-05-12"^^xsd:date ;
+                      pk:wirdDurchgefuehrtVon pk:org_ZeTT ;
+                      pk:findetStattIn pk:ort_Bochum ;
+                      pk:behandeltKategorie pk:kat_Einrichtung .
+
+pk:art_Pflege40WasIstDas a pk:Artikel ;
+                         pk:hatTitel "Pflege 4.0 – Was ist das?" ;
+                         pk:hatURL "https://www.lebenpflegedigital.de/wissen/pflege40" ;
+                         pk:hatAutor pk:p_InaCzyborra ;
+                         pk:behandeltKategorie pk:kat_Begriffserklaerung .
+
+pk:art_SensorikPraxis a pk:Artikel ;
+                      pk:hatTitel "Sensorik in der Pflegepraxis" ;
+                      pk:hatURL "https://www.lebenpflegedigital.de/wissen/sensorik" ;
+                      pk:hatAutor pk:p_MartinKlein ;
+                      pk:behandeltKategorie pk:kat_Einrichtung .
+
+pk:org_TUBerlin pk:nutztTechnologie pk:tech_Sturzsensor .
+pk:org_TUBerlin pk:nutztTechnologie pk:tech_PflegeApp .
+pk:org_ZeTT     pk:nutztTechnologie pk:tech_PflegeApp .

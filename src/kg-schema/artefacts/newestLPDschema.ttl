@@ -1,0 +1,151 @@
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema:  <https://schema.org/> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix sh:      <http://www.w3.org/ns/shacl#> .
+@prefix ex:      <http://example.org/lebenpflege#> .
+
+#################################################################
+# Ontology header
+#################################################################
+
+<http://example.org/lebenpflege>
+    a owl:Ontology ;
+    rdfs:label "Leben–Pflege–Digital Vocabulary"@de ;
+    rdfs:comment "Vokabular für Knoten & Kanten aus data.ttl."@de ;
+    owl:versionInfo "1.0.0" .
+
+#################################################################
+# Classes (genau die, die in data.ttl vorkommen)
+#################################################################
+
+ex:Begriff a rdfs:Class ;
+           rdfs:subClassOf schema:Thing , skos:Concept ;
+           rdfs:label "Begriff"@de ;
+           rdfs:comment "Lexikon-/Glossareintrag oder terminologischer Begriff."@de .
+
+ex:Kategorie a rdfs:Class ;
+             rdfs:subClassOf schema:Thing , skos:Concept ;
+             rdfs:label "Kategorie"@de ;
+             rdfs:comment "Übergeordnete Themen-/Kategorie-Knoten."@de .
+
+# Hinweis: schema:Place und schema:CreativeWork werden direkt aus schema.org genutzt.
+
+#################################################################
+# Object Properties (genau die, die in data.ttl vorkommen)
+#################################################################
+
+# Einseitige Erwähnung (breit gehalten, da in data.ttl sehr variabel genutzt)
+ex:mentions a owl:ObjectProperty ;
+            rdfs:label "erwähnt"@de ;
+            rdfs:comment "Subjekt erwähnt Objekt im inhaltlichen Kontext (einseitig)."@de ;
+            rdfs:domain schema:Thing ;
+            rdfs:range  schema:Thing ;
+            rdfs:seeAlso schema:mentions ;
+            schema:domainIncludes ex:Begriff , ex:Kategorie , schema:CreativeWork , schema:Place ;
+            schema:rangeIncludes  ex:Begriff , ex:Kategorie , schema:CreativeWork , schema:Place .
+
+# Verweis auf zugehörige Dokumente (PDFs etc.)
+ex:hasdocument a owl:ObjectProperty ;
+               rdfs:label "hat Dokument"@de ;
+               rdfs:comment "Verweist auf ein zugehöriges Dokument/Material (CreativeWork)."@de ;
+               rdfs:domain schema:Thing ;
+               rdfs:range  schema:CreativeWork ;
+               owl:inverseOf ex:isDocumentOf ;
+               schema:domainIncludes ex:Begriff , ex:Kategorie , schema:Place ;
+               schema:rangeIncludes  schema:CreativeWork .
+
+ex:isDocumentOf a owl:ObjectProperty ;
+                rdfs:label "ist Dokument von"@de ;
+                rdfs:comment "Inverse zu ex:hasdocument."@de ;
+                rdfs:domain schema:CreativeWork ;
+                rdfs:range  schema:Thing .
+
+# Unspezifische „steht in Beziehung zu“ – symmetrisch
+ex:relatedto a owl:ObjectProperty , owl:SymmetricProperty ;
+             rdfs:label "steht in Beziehung zu"@de ;
+             rdfs:comment "Unspezifische inhaltliche Nähe/Ähnlichkeit."@de ;
+             rdfs:domain schema:Thing ;
+             rdfs:range  schema:Thing ;
+             rdfs:seeAlso skos:related ;
+             schema:domainIncludes ex:Begriff , ex:Kategorie , schema:CreativeWork , schema:Place ;
+             schema:rangeIncludes  ex:Begriff , ex:Kategorie , schema:CreativeWork , schema:Place .
+
+# „geleitet von“ – breit, da in data.ttl auch Nicht-Personen/ORGs auftreten
+ex:ledby a owl:ObjectProperty ;
+         rdfs:label "geleitet von"@de ;
+         rdfs:comment "Leitungsverhältnis: Subjekt wird von Objekt geleitet."@de ;
+         rdfs:domain schema:Thing ;
+         rdfs:range  schema:Thing ;
+         owl:inverseOf ex:leads ;
+         schema:domainIncludes schema:Organization , schema:CreativeWork , schema:Event , schema:Place , ex:Kategorie , ex:Begriff ;
+         schema:rangeIncludes  schema:Person , schema:Organization , ex:Begriff .
+
+ex:leads a owl:ObjectProperty ;
+         rdfs:label "leitet"@de ;
+         rdfs:comment "Inverse zu ex:ledby."@de ;
+         rdfs:domain schema:Thing ;
+         rdfs:range  schema:Thing .
+
+# Teil-von – transitiv (z. B. Seite/Unterbereich/Kategorie-Struktur)
+ex:partof a owl:ObjectProperty , owl:TransitiveProperty ;
+          rdfs:label "ist Teil von"@de ;
+          rdfs:comment "Strukturelle Zugehörigkeit/Containment."@de ;
+          rdfs:domain schema:Thing ;
+          rdfs:range  schema:Thing ;
+          schema:domainIncludes ex:Begriff , ex:Kategorie , schema:CreativeWork , schema:Place ;
+          schema:rangeIncludes  ex:Begriff , ex:Kategorie , schema:CreativeWork , schema:Place .
+
+# „ist-ein“ aus Text-Extraktion (KEINE SubProperty von rdf:type,
+# weil in data.ttl oft auf Instanzen/Kategorien zeigt, nicht auf rdfs:Class)
+ex:isa a owl:ObjectProperty ;
+       rdfs:label "ist ein(e)"@de ;
+       rdfs:comment "Kategorie-/Typ-Zuordnung aus Freitext (keine strenge Klassenzuweisung)."@de ;
+       rdfs:domain schema:Thing ;
+       rdfs:range  schema:Thing ;
+       schema:rangeIncludes ex:Kategorie , skos:Concept , schema:Thing .
+
+#################################################################
+# Dateneigenschaften, die du bereits nutzt (keine Neudefinition)
+#################################################################
+# rdfs:label           – sprachmarkierter Name
+# schema:description   – Kurzbeschreibung (Text)
+# schema:url           – kanonische URL
+
+#################################################################
+# Schlanke SHACL-Checks (freiwillig; bewusst permissiv gehalten)
+#################################################################
+
+ex:ThingShape a sh:NodeShape ;
+              sh:targetClass schema:Thing ;
+              sh:property [
+                    sh:path rdfs:label ;
+                    sh:minCount 1 ;
+                    sh:message "Jeder Knoten sollte ein rdfs:label haben."@de
+                ] ;
+              sh:property [
+                    sh:path schema:url ;
+                    sh:maxCount 1 ;
+                    sh:message "Maximal eine schema:url pro Knoten."@de
+                ] .
+
+ex:HasDocumentTargetShape a sh:NodeShape ;
+                          sh:targetObjectsOf ex:hasdocument ;
+                          sh:class schema:CreativeWork ;
+                          sh:message "Ziel von ex:hasdocument sollte ein schema:CreativeWork sein."@de .
+
+ex:RelatedToShape a sh:PropertyShape ;
+                  sh:path ex:relatedto ;
+                  sh:nodeKind sh:IRIOrLiteral ;
+                  sh:message "ex:relatedto verbindet zwei Ressourcen."@de .
+
+ex:IsaShape a sh:PropertyShape ;
+            sh:path ex:isa ;
+            sh:nodeKind sh:IRI ;
+            sh:message "ex:isa sollte auf eine Ressource (z. B. Kategorie) zeigen."@de .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xs:   <http://www.w3.org/2001/XMLSchema#> .
+

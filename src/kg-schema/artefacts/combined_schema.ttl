@@ -1,0 +1,141 @@
+@prefix ex: <http://example.org/lebenpflege#> .
+@prefix mtf: <https://kg.meintechnikfinder.de#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:Thema a rdfs:Class,
+        owl:Class ;
+    rdfs:label "Thema"@de,
+        "Topic"@en ;
+    rdfs:comment "Ein inhaltlicher Begriff oder Themenblock aus dem Portal."@de ;
+    rdfs:subClassOf skos:Concept .
+
+ex:ThemaShape a sh:NodeShape ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path ex:titel ],
+        [ sh:datatype rdf:langString ;
+            sh:maxCount 1 ;
+            sh:maxLength 300 ;
+            sh:path ex:snippet ],
+        [ sh:datatype xsd:integer ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path ex:csvId ],
+        [ sh:class ex:Thema ;
+            sh:minCount 0 ;
+            sh:path ex:erwaehnt ] ;
+    sh:targetClass ex:Thema .
+
+ex:quelle a rdf:Property,
+        owl:DatatypeProperty ;
+    rdfs:label "Quelle (URL)"@de,
+        "source URL"@en ;
+    rdfs:domain ex:Thema ;
+    rdfs:range xsd:anyURI ;
+    rdfs:subPropertyOf schema:url .
+
+mtf:adressiertPflegeproblem a owl:ObjectProperty ;
+    rdfs:domain mtf:Produkt ;
+    rdfs:range mtf:Pflegeproblem .
+
+mtf:behandeltOberthema a owl:ObjectProperty ;
+    rdfs:domain mtf:Produkt ;
+    rdfs:range mtf:Oberthema .
+
+mtf:gehörtZuKategorie a owl:ObjectProperty ;
+    rdfs:domain mtf:Produkt ;
+    rdfs:range mtf:Produktkategorie .
+
+mtf:hatBeschreibung a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+mtf:hatHersteller a owl:ObjectProperty ;
+    rdfs:domain mtf:Produkt ;
+    rdfs:range mtf:Hersteller .
+
+mtf:hatInteroperabilitaet a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+mtf:hatKaufpreis a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+mtf:hatLetztesUpdate a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+mtf:hatMonatlicheKosten a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+mtf:hatProduktform a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+mtf:hatStatus a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+mtf:hatTitel a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+mtf:hatVernetzungsart a owl:ObjectProperty ;
+    rdfs:domain mtf:Produkt ;
+    rdfs:range mtf:Vernetzungsart .
+
+mtf:hatVertrieb a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+ex:csvId a rdf:Property,
+        owl:DatatypeProperty ;
+    rdfs:label "CSV-ID"@de ;
+    rdfs:comment "Fortlaufende numerische ID aus dem Crawler-Export."@de ;
+    rdfs:domain ex:Thema ;
+    rdfs:range xsd:integer .
+
+ex:erwaehnt a rdf:Property,
+        owl:ObjectProperty ;
+    rdfs:label "erwähnt"@de,
+        "mentions"@en ;
+    rdfs:comment "Verbindung von Thema A zu Thema B, wenn A den Begriff B im Snippet erwähnt."@de ;
+    rdfs:domain ex:Thema ;
+    rdfs:range ex:Thema ;
+    owl:propertyChainAxiom ( schema:description rdfs:label ) .
+
+ex:snippet a rdf:Property,
+        owl:DatatypeProperty ;
+    rdfs:label "Snippet"@de,
+        "snippet"@en ;
+    rdfs:comment "Erster Textabschnitt (≤ 300 Zeichen) der das Thema beschreibt."@de ;
+    rdfs:domain ex:Thema ;
+    rdfs:range rdf:langString ;
+    rdfs:subPropertyOf schema:description .
+
+ex:titel a rdf:Property,
+        owl:DatatypeProperty ;
+    rdfs:label "Titel"@de,
+        "title"@en ;
+    rdfs:domain ex:Thema ;
+    rdfs:range xsd:string ;
+    rdfs:subPropertyOf schema:name .
+
+mtf:Hersteller a owl:Class ;
+    rdfs:label "Hersteller"@de .
+
+mtf:Oberthema a owl:Class ;
+    rdfs:label "Oberthema"@de .
+
+mtf:Pflegeproblem a owl:Class ;
+    rdfs:label "Pflegeproblem"@de .
+
+mtf:Produktkategorie a owl:Class ;
+    rdfs:label "Produktkategorie"@de .
+
+mtf:Vernetzungsart a owl:Class ;
+    rdfs:label "Vernetzungsart"@de .
+
+mtf:Produkt a owl:Class ;
+    rdfs:label "Produkt"@de .
+

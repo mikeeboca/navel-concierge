@@ -1,0 +1,113 @@
+###############################################################################
+# Ontologie „Pflege 4.0 – KG“  (Version 0.4 – DE)
+#   • Knoten = Themen/Begriffe   (title + snippet – max. 300 Zeichen)
+#   • Kanten = mentions-Relation (Thema A erwähnt Thema B)
+###############################################################################
+
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <https://schema.org/> .
+@prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix dct:    <http://purl.org/dc/terms/> .
+@prefix ex:     <http://example.org/lebenpflege#> .
+
+###############################################################################
+## 1) KLASSEN
+###############################################################################
+
+ex:Thema
+    a                rdfs:Class , owl:Class ;
+    rdfs:label       "Thema"@de , "Topic"@en ;
+    rdfs:comment     "Ein inhaltlicher Begriff oder Themenblock aus dem Portal."@de ;
+    rdfs:subClassOf  skos:Concept .
+
+###############################################################################
+## 2) EIGENSCHAFTEN
+###############################################################################
+
+### 2.1  Datentyp-Eigenschaften des Knotens
+ex:titel
+    a                rdf:Property , owl:DatatypeProperty ;
+    rdfs:label       "Titel"@de , "title"@en ;
+    rdfs:subPropertyOf schema:name ;
+    rdfs:domain      ex:Thema ;
+    rdfs:range       xsd:string .
+
+ex:snippet
+    a                rdf:Property , owl:DatatypeProperty ;
+    rdfs:label       "Snippet"@de , "snippet"@en ;
+    rdfs:comment     "Erster Textabschnitt (≤ 300 Zeichen) der das Thema beschreibt."@de ;
+    rdfs:subPropertyOf schema:description ;
+    rdfs:domain      ex:Thema ;
+    rdfs:range       rdf:langString .
+
+ex:quelle
+    a                rdf:Property , owl:DatatypeProperty ;
+    rdfs:label       "Quelle (URL)"@de , "source URL"@en ;
+    rdfs:subPropertyOf schema:url ;
+    rdfs:domain      ex:Thema ;
+    rdfs:range       xsd:anyURI .
+
+ex:csvId
+    a                rdf:Property , owl:DatatypeProperty ;
+    rdfs:label       "CSV-ID"@de ;
+    rdfs:comment     "Fortlaufende numerische ID aus dem Crawler-Export."@de ;
+    rdfs:domain      ex:Thema ;
+    rdfs:range       xsd:integer .
+
+### 2.2  Objekt-Eigenschaften (Kanten)
+ex:erwaehnt
+    a                rdf:Property , owl:ObjectProperty ;
+    rdfs:label       "erwähnt"@de , "mentions"@en ;
+    rdfs:comment     "Verbindung von Thema A zu Thema B, wenn A den Begriff B im Snippet erwähnt."@de ;
+    rdfs:domain      ex:Thema ;
+    rdfs:range       ex:Thema ;
+    owl:propertyChainAxiom ( schema:description rdfs:label ) .
+
+###############################################################################
+## 3) SHACL-SHAPES  (Validierung der importierten Daten)
+###############################################################################
+
+ex:ThemaShape
+    a                sh:NodeShape ;
+    sh:targetClass   ex:Thema ;
+
+    # ---------- Titel (Pflicht) ------------------------------------------
+    sh:property [
+                         sh:path           ex:titel ;
+                         sh:datatype       xsd:string ;
+                         sh:minCount       1 ;
+                         sh:maxCount       1
+                     ] ;
+
+    # ---------- Snippet (optional aber empfohlen) ------------------------
+    sh:property [
+                         sh:path           ex:snippet ;
+                         sh:datatype       rdf:langString ;
+                         sh:maxCount       1 ;
+                         sh:maxLength      300
+                     ] ;
+
+    # ---------- CSV-ID (Pflicht) ----------------------------------------
+    sh:property [
+                         sh:path           ex:csvId ;
+                         sh:datatype       xsd:integer ;
+                         sh:minCount       1 ;
+                         sh:maxCount       1
+                     ] ;
+
+    # ---------- Erwähnungen (0..n) ---------------------------------------
+    sh:property [
+                         sh:path           ex:erwaehnt ;
+                         sh:class          ex:Thema ;
+                         sh:minCount       0
+                     ] .
+
+###############################################################################
+# Ende – diese Ontologie genügt, um jeden Datensatz aus „kg.csv“
+#              (csvId, titel, snippet, erwaehnt) als RDF einzulesen,
+#              zu validieren und mit LLMs sinnvoll abzufragen.
+###############################################################################

@@ -1,0 +1,69 @@
+@prefix mtf: <https://kg.meintechnikfinder.de#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+mtf:adressiertPflegeproblem a <http://www.w3.org/2002/07/owl#ObjectProperty> ;
+    rdfs:domain mtf:Produkt ;
+    rdfs:range mtf:Pflegeproblem .
+
+mtf:behandeltOberthema a <http://www.w3.org/2002/07/owl#ObjectProperty> ;
+    rdfs:domain mtf:Produkt ;
+    rdfs:range mtf:Oberthema .
+
+mtf:gehörtZuKategorie a <http://www.w3.org/2002/07/owl#ObjectProperty> ;
+    rdfs:domain mtf:Produkt ;
+    rdfs:range mtf:Produktkategorie .
+
+mtf:hatBeschreibung a <http://www.w3.org/2002/07/owl#DatatypeProperty> ;
+    rdfs:range xsd:string .
+
+mtf:hatHersteller a <http://www.w3.org/2002/07/owl#ObjectProperty> ;
+    rdfs:domain mtf:Produkt ;
+    rdfs:range mtf:Hersteller .
+
+mtf:hatInteroperabilitaet a <http://www.w3.org/2002/07/owl#DatatypeProperty> ;
+    rdfs:range xsd:string .
+
+mtf:hatKaufpreis a <http://www.w3.org/2002/07/owl#DatatypeProperty> ;
+    rdfs:range xsd:string .
+
+mtf:hatLetztesUpdate a <http://www.w3.org/2002/07/owl#DatatypeProperty> ;
+    rdfs:range xsd:string .
+
+mtf:hatMonatlicheKosten a <http://www.w3.org/2002/07/owl#DatatypeProperty> ;
+    rdfs:range xsd:string .
+
+mtf:hatProduktform a <http://www.w3.org/2002/07/owl#DatatypeProperty> ;
+    rdfs:range xsd:string .
+
+mtf:hatStatus a <http://www.w3.org/2002/07/owl#DatatypeProperty> ;
+    rdfs:range xsd:string .
+
+mtf:hatTitel a <http://www.w3.org/2002/07/owl#DatatypeProperty> ;
+    rdfs:range xsd:string .
+
+mtf:hatVernetzungsart a <http://www.w3.org/2002/07/owl#ObjectProperty> ;
+    rdfs:domain mtf:Produkt ;
+    rdfs:range mtf:Vernetzungsart .
+
+mtf:hatVertrieb a <http://www.w3.org/2002/07/owl#DatatypeProperty> ;
+    rdfs:range xsd:string .
+
+mtf:Hersteller a <http://www.w3.org/2002/07/owl#Class> ;
+    rdfs:label "Hersteller"@de .
+
+mtf:Oberthema a <http://www.w3.org/2002/07/owl#Class> ;
+    rdfs:label "Oberthema"@de .
+
+mtf:Pflegeproblem a <http://www.w3.org/2002/07/owl#Class> ;
+    rdfs:label "Pflegeproblem"@de .
+
+mtf:Produktkategorie a <http://www.w3.org/2002/07/owl#Class> ;
+    rdfs:label "Produktkategorie"@de .
+
+mtf:Vernetzungsart a <http://www.w3.org/2002/07/owl#Class> ;
+    rdfs:label "Vernetzungsart"@de .
+
+mtf:Produkt a <http://www.w3.org/2002/07/owl#Class> ;
+    rdfs:label "Produkt"@de .
+

@@ -1,0 +1,23 @@
+(function(){
+  const DELIM=';';const NEWLINE='\r\n';const EXCLUDE_URL_FIELDS=true;
+  function getProducts(){try{const r=JSON.parse(localStorage.getItem('renderedProducts')||'[]');if(r.length)return r;}catch(e){}try{const w=JSON.parse(localStorage.getItem('wishlist')||'[]');if(w.length)return w;}catch(e){}try{const s=JSON.parse(localStorage.getItem('selectedProduct')||'null');if(s)return [s];}catch(e){}return []}
+  function isUrl(v){return typeof v==='string'&&/https?:\/\//i.test(v)}
+  function collectHeaders(items){const S=new Set();items.forEach(o=>Object.keys(o||{}).forEach(k=>S.add(k)));return [...S]}
+  function esc(v){if(v==null)return'';let s=String(v).replace(/\r?\n|\r/g,' ').replace(/\u2028|\u2029/g,' ');return `"${s.replace(/"/g,'""')}"`}
+  const products=getProducts();
+  if(!products.length){console.warn('Keine Produkte gefunden. Öffne zuerst Produktliste.html, scrolle einmal bis unten und starte erneut.');return}
+  let headers=collectHeaders(products);
+  if(EXCLUDE_URL_FIELDS){
+    headers=headers.filter(h=>!(/url|produktdatenblatt|bild|image|icon|logo/i.test(h))&& !products.some(p=>isUrl(p[h])));
+  }
+  const preferred=['Produktname','Hersteller','Produktbeschreibung','Kaufpreis_in_Euro','Monatliche_Kosten','Refinanzierungsmoglichkeit','Vertrieb','Zuletzt_aktualisiert','Interoperabilitat','SmartphoneTablett_erforderlich','Stromversorgung','Mobilitat','Eigenstaendige_Loesung','Oberthema','Pflegeproblem','Produktkategorie','PrimeOberthema','LPD_Schauraum'];
+  headers=[...preferred.filter(h=>headers.includes(h)), ...headers.filter(h=>!preferred.includes(h))];
+  const lines=[headers.map(esc).join(DELIM)];
+  for(const p of products){lines.push(headers.map(h=>esc(p[h])).join(DELIM))}
+  const csv='\uFEFF'+lines.join(NEWLINE);
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=`meintechnikfinder_produkte_${products.length}.csv`;document.body.appendChild(a);a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  console.log(`Export fertig: ${products.length} Produkte.`);
+})();

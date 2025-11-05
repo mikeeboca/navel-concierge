@@ -1,0 +1,28 @@
+@prefix :      <https://kg.beispiel.org/pflege40#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+
+:Organisation     a owl:Class ; rdfs:label "Organisation"@de .
+:Person           a owl:Class ; rdfs:label "Person"@de .
+:Technologie      a owl:Class ; rdfs:label "Technologie"@de .
+:Event            a owl:Class ; rdfs:label "Veranstaltung"@de .
+:Artikel          a owl:Class ; rdfs:label "Artikel/Seite"@de .
+:Kategorie        a owl:Class ; rdfs:label "Kategorie"@de .
+:Ort              a owl:Class ; rdfs:label "Ort"@de .
+
+:DigitalesProdukt rdfs:subClassOf :Technologie .
+:Sensorik         rdfs:subClassOf :DigitalesProdukt .
+:Assistenzsystem  rdfs:subClassOf :DigitalesProdukt .
+:VirtuelleTour    rdfs:subClassOf :Event .
+
+:hatAutor           a owl:ObjectProperty ; rdfs:domain :Artikel ;        rdfs:range :Person .
+:wirdDurchgefuehrtVon a owl:ObjectProperty ; rdfs:domain :Event ;          rdfs:range :Organisation .
+:findetStattIn      a owl:ObjectProperty ; rdfs:domain :Event ;          rdfs:range :Ort .
+:behandeltKategorie a owl:ObjectProperty ; rdfs:domain :Artikel , :Event ; rdfs:range :Kategorie .
+:nutztTechnologie   a owl:ObjectProperty ; rdfs:domain :Organisation ;   rdfs:range :Technologie .
+
+:hatTitel         a owl:DatatypeProperty ; rdfs:range xsd:string .
+:hatDatum         a owl:DatatypeProperty ; rdfs:range xsd:date .
+:hatURL           a owl:DatatypeProperty ; rdfs:range xsd:anyURI .
+:hatBeschreibung  a owl:DatatypeProperty ; rdfs:range xsd:string .

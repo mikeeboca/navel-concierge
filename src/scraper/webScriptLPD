@@ -1,0 +1,115 @@
+(async()=>{
+/* ------------------------------------------------------------------
+ *  Mini-Crawler für LEBENPFLEGE DIGITAL
+ *  – extrahiert H1-H3-Blöcke als Knoten + “mentions”-Kanten
+ *  – schreibt alles als kg.csv (Nodes ∧ Edges in 1 Tabelle)
+ *  – ohne doppelte Knoten oder Kanten
+ * ------------------------------------------------------------------ */
+
+const START = location.origin;   // Basis-URL
+const MAX   = 200;                // max. Anzahl Seiten
+const H     = ['H1','H2','H3'];  // welche Überschriften nehmen
+const TRIM  = 300;               // max. Textlänge pro Knoten
+const DELAY = 200;               // ms Pause pro Fetch
+
+/* ---------- Helfer ------------------------------------------------- */
+const sleep = ms=>new Promise(r=>setTimeout(r,ms));
+const slug  = s=>s.toLowerCase()
+                  .replace(/[^\p{L}\p{N}]+/gu,'-')
+                  .replace(/^-+|-+$/g,'');
+const csv   = v=>`"${String(v??'').replace(/"/g,'""')}"`;
+const dl    =(name,str)=>{
+  const a=Object.assign(document.createElement('a'),{
+    href:URL.createObjectURL(new Blob([str],{type:'text/csv'})),
+    download:name
+  });
+  document.body.appendChild(a);a.click();a.remove();
+};
+
+/* ---------- Datenstrukturen --------------------------------------- */
+let nextId=0;
+const nodeMap = new Map();               // key → node­Id
+const nodes   = [];                      // {id,title,text}
+const edgeSet = new Set();               // 's|d' für Dup-Check
+const edges   = [];                      // {s,d,r}
+
+/* ---------- Node- / Edge-Builder ---------------------------------- */
+function addNode(key,obj){
+  if(nodeMap.has(key)) return nodeMap.get(key);
+  const id = ++nextId;
+  nodeMap.set(key,id);
+  nodes.push({id,...obj});
+  return id;
+}
+function addEdge(s,d,r){
+  const key = `${s}|${d}|${r}`;
+  if(edgeSet.has(key)) return;           // Duplikat?
+  edgeSet.add(key);
+  edges.push({s,d,r});
+}
+
+/* ---------- Crawl-Schleife ---------------------------------------- */
+const Q=[START], seen=new Set(), host=new URL(START).host;
+
+while(Q.length && seen.size<MAX){
+  const url=Q.shift();
+  if(seen.has(url)) continue;
+  seen.add(url);
+
+  console.log(`📄  (${seen.size}/${MAX})  ${url}`);
+  let html='';
+  try{ html = await (await fetch(url)).text(); }
+  catch{ console.warn('⚠️  Fehler bei',url); continue; }
+
+  const doc = new DOMParser().parseFromString(html,'text/html');
+  const heads=[...doc.body.querySelectorAll(H.join(','))];
+
+  // ---------- Knoten aus Überschriften + Fließtext ------------------
+  heads.forEach((h,idx)=>{
+    const key   = url+'#'+slug(h.textContent);
+    let   text  = '';
+
+    for(let n=h.nextSibling;n && n!==heads[idx+1]; n=n.nextSibling){
+      if(n.nodeType===3)        text+=n.textContent;
+      else if(n.innerText)      text+=n.innerText+' ';
+    }
+    text=text.trim().replace(/\s+/g,' ').slice(0,TRIM);
+    if(text.length<5) return;             // zu kurz?
+
+    addNode(key,{title:h.textContent.trim(),text});
+  });
+
+  // ---------- weitere interne Links sammeln ------------------------
+  doc.querySelectorAll('a[href]').forEach(a=>{
+    try{
+      const v=new URL(a.href,url);
+      if(v.host!==host) return;           // extern
+      const abs = v.href.split('#')[0];
+      if(!seen.has(abs) && !Q.includes(abs) && Q.length<MAX) Q.push(abs);
+    }catch{}
+  });
+
+  await sleep(DELAY);
+}
+
+/* ---------- Kanten “mentions” bilden ------------------------------ */
+console.log('🔗  Kanten erzeugen …');
+nodes.forEach(s=>{
+  nodes.forEach(d=>{
+    if(s.id!==d.id &&
+        s.text.toLowerCase().includes(d.title.toLowerCase()))
+      addEdge(s.id,d.id,'mentions');
+  });
+});
+
+/* ---------- CSV-Export -------------------------------------------- */
+const header='source_id,source_title,source_text,relation,target_id,target_title,target_text';
+const rows = edges.map(e=>{
+  const s=nodes.find(n=>n.id===e.s);
+  const d=nodes.find(n=>n.id===e.d);
+  return [s.id,s.title,s.text,e.r,d.id,d.title,d.text].map(csv).join(',');
+});
+dl('kg.csv',[header,...rows].join('\n'));
+
+console.log(`✅  ${nodes.length} Knoten, ${edges.length} Kanten → kg.csv`);
+})();

@@ -1,0 +1,151 @@
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema:  <https://schema.org/> .
+@prefix ex:      <http://example.org/lebenpflege#> .
+
+
+ex:n2 a ex:Glossareintrag ;
+    rdfs:label "DEMIS"@de ;
+    ex:volltext "DEMIS (Deutsches Elektronisches Melde- und Informationssystem für den Infektionsschutz) ist ein elektronisches Meldesystem, welches den Infektionsschutz in Deutschland sichern soll. Weiterlesen »"@de .
+
+ex:n26 a ex:Glossareintrag ;
+    rdfs:label "TI"@de ;
+    ex:volltext "Als Telematikinfrastruktur, abgekürzt TI, wird die Vernetzung der Akteurinnen und Akteure im deutschen Gesundheitswesen zum Austausch von Gesundheitsdaten bezeichnet. Über Weiterlesen »"@de .
+
+ex:n3 a ex:Glossareintrag ;
+    rdfs:label "DiGA"@de ;
+    ex:volltext "Als digitale Gesundheitsanwendung werden Medizinprodukte bezeichnet, die zum wesentlichen Teil auf Digitaltechnologie beruhen. In ihrer Anwendung unterstützen sie die Diagnose, Weiterlesen »"@de .
+
+ex:n4 a ex:Glossareintrag ;
+    rdfs:label "Digital"@de ;
+    ex:volltext "Das Eigenschaftswort „digital“ beschreibt, dass Informationen in einem Format vorliegen, das Computer verstehen und bearbeiten können. Konkret ist dies das Weiterlesen »"@de .
+
+ex:n5 a ex:Glossareintrag ;
+    rdfs:label "DiPA"@de ;
+    ex:volltext "Als digitale Pflegeanwendungen (DiPA) werden Apps bezeichnet, die dabei helfen, Beeinträchtigungen der Selbständigkeit oder der Fähigkeiten der Pflegebedürftigen oder des Weiterlesen »"@de .
+
+ex:n7 a ex:Glossareintrag ;
+    rdfs:label "eHBA"@de ;
+    ex:volltext "eHBA ist die Abkürzung für elektronischer Heilberufsausweis. Der eHBA identifiziert Sie als zugriffsberechtigte Pflegekraft. Auch hier wieder geht es um Weiterlesen »"@de .
+
+ex:n9 a ex:Glossareintrag ;
+    rdfs:label "eMP"@de ;
+    ex:volltext "eMP steht für elektronischer Medikationsplan. Der eMP ist eine freiwillige Möglichkeit für Versicherte den eigenen Medikamentenplan auf der Gesundheitskarte zu Weiterlesen »"@de .
+
+ex:n10 a ex:Glossareintrag ;
+    rdfs:label "Endgerät"@de ;
+    ex:volltext "Als Endgerät bezeichnet man ein elektronisches Gerät, dass an ein Netzwerk von Kommunikationstechnik angebunden ist. Diese Anbindung kann über Kabel Weiterlesen »"@de .
+
+ex:n11 a ex:Glossareintrag ;
+    rdfs:label "ePA"@de ;
+    ex:volltext "Die elektronische Patientenakte (ePA) ist der zentrale digitale Speicherort für persönliche Gesundheitsdaten. Ab dem Jahr 2025 legen die gesetzlichen Krankenkassen Weiterlesen »"@de .
+
+ex:n12 a ex:Glossareintrag ;
+    rdfs:label "Gesundheits-App"@de ;
+    ex:volltext "Als Endgerät bezeichnet man ein elektronisches Gerät, dass an ein Netzwerk von Kommunikationstechnik angebunden ist. Diese Anbindung kann über Kabel Weiterlesen »"@de .
+
+ex:n13 a ex:Glossareintrag ;
+    rdfs:label "Institutionskarte"@de ;
+    ex:volltext "(SMC-B/SMC-B-ORG) Identifiziert Ihre Einrichtung und legitimiert Ihren Zugriff auf die TI Auch hier geht es wieder um das Thema Datensicherheit. Weiterlesen »"@de .
+
+ex:n27 a ex:Glossareintrag ;
+    rdfs:label "TIM"@de ;
+    ex:volltext "Mit dem TI-Messenger (TIM) können Kurznachrichten schnell, sicher und zuverlässig elektronisch im Medizinwesen ausgetauscht werden. Mit dem TI-Messenger können kurze, Weiterlesen »"@de .
+
+ex:n15 a ex:Glossareintrag ;
+    rdfs:label "KI"@de ;
+    ex:volltext "KI ist die Abkürzung für Künstliche Intelligenz. Auf Englisch auch AI (artificial intelligence) genannt. Dabei ist die Bezeichnung „Intelligenz“ etwas Weiterlesen »"@de .
+
+ex:n16 a ex:Glossareintrag ;
+    rdfs:label "KIM"@de ;
+    ex:volltext "KIM steht für sichere Kommunikation im Medizinwesen. Mithilfe der Telematikinfrastruktur wird auch die Kommunikation im Medizinwesen nachhaltig verbessert werden. Mit Weiterlesen »"@de .
+
+ex:n17 a ex:Glossareintrag ;
+    rdfs:label "Konnektor"@de ;
+    ex:volltext "Verbindet Ihre Einrichtung mit der TI Ohne einen Konnektor können Sie sich nicht an die TI anbinden. Bei den Konnektoren Weiterlesen »"@de .
+
+ex:n18 a ex:Glossareintrag ;
+    rdfs:label "Kostenübernahme für technische Hilfsmittel"@de ;
+    ex:volltext "Sofern Ihr Antrag angenommen wurde, übernimmt Ihre Pflegekasse voraussichtlich folgende Kosten (für „technische Hilfsmittel“): Pflegebedürftige ab dem 18. Lebensjahr müssen Weiterlesen »"@de .
+
+ex:n20 a ex:Glossareintrag ;
+    rdfs:label "Pflegehilfsmittelkatalog"@de ;
+    ex:volltext "Dieser dient den Kassen als Orientierungshilfe. Tatsache ist aber, dass viele Produkte aus dem Bereich Pflege 4.0 noch nicht Bestandteil Weiterlesen »"@de .
+
+ex:n21 a ex:Glossareintrag ;
+    rdfs:label "Schnittstelle"@de ;
+    ex:volltext "Um digitale Informationen von A nach B zu schicken braucht man so genannte Schnittstellen (engl. interfaces). Das kann man sich Weiterlesen »"@de .
+
+ex:n22 a ex:Glossareintrag ;
+    rdfs:label "Sensor"@de ;
+    ex:volltext "Sensoren sind elektronische „Fühler“, die einen bestimmten Teil der Umwelt erfassen und in digitale Daten umwandeln. So kann ein Sensor Weiterlesen »"@de .
+
+ex:n23 a ex:Glossareintrag ;
+    rdfs:label "Smart Home"@de ;
+    ex:volltext "Das „intelligente Zuhause“ hat große Überschneidungen zu AAL. Der Fokus liegt hier aber nicht auf der Unterstützung und Kompensation, sondern Weiterlesen »"@de .
+
+ex:n1 a ex:Glossareintrag ;
+    rdfs:label "AAL"@de ;
+    ex:volltext "Eine Abkürzung für den englischen Ausdruck „ambient assisted living“. Das bedeutet auf Deutsch so viel wie „Leben mit unterstützender Umgebung“. Weiterlesen »"@de .
+
+ex:n24 a ex:Glossareintrag ;
+    rdfs:label "Telecare"@de ;
+    ex:volltext "Die Begriffe Telecare und Telenursing sind sehr eng mit dem Ausdruck „Telemedizin“ verwandt. So wird auch hier Telekommunikationstechnik (wie Videokonferenz Weiterlesen »"@de .
+
+ex:n25 a ex:Glossareintrag ;
+    rdfs:label "Telemedizin"@de ;
+    ex:volltext "Von Telemedizin spricht man, wenn medizinische Dienstleistungen über Entfernungen hinweg erbracht werden. Dafür werden Mittel der Telekommunikationstechnik verwendet, wie zum Weiterlesen »"@de .
+
+ex:n28 a ex:Glossareintrag ;
+    rdfs:label "VPN-Zugangsdienst"@de ;
+    ex:volltext "Ihre gesicherte und verschlüsselte Internetverbindung mit der TI Auch der so genannte VPN-Zugangsdienst ist zwingend notwendig, damit Sie innerhalb der Weiterlesen »"@de .
+
+ex:n29 a ex:Glossareintrag ;
+    rdfs:label "VSDM"@de ;
+    ex:volltext "Das VSDM dient der digitalen Überprüfung von Versichertenstammdaten auf der elektronischen Gesundheitskarte. Das VSDM dient der digitalen Überprüfung von Versichertenstammdaten Weiterlesen »"@de .
+
+ex:n30 a ex:Glossareintrag ;
+    rdfs:label "Wearables"@de ;
+    ex:volltext "Wearable ist englisch und lässt sich sinngemäß als „tragbare Technik“ übersetzen. So bezeichnet man also digital vernetzte Produkte, die man Weiterlesen »"@de .
+
+ex:n35 a ex:Glossareintrag ;
+    rdfs:label "Pflegeberufe"@de ;
+    ex:volltext "Welche Arbeitsbedingungen sollen in einer digitalisierten Pflegebranche gelten?"@de .
+
+ex:n2 schema:mentions ex:n26 .
+ex:n3 schema:mentions ex:n4 .
+ex:n4 schema:mentions ex:n26 .
+ex:n5 schema:mentions ex:n4 .
+ex:n5 schema:mentions ex:n26 .
+ex:n7 schema:mentions ex:n26 .
+ex:n9 schema:mentions ex:n26 .
+ex:n10 schema:mentions ex:n26 .
+ex:n11 schema:mentions ex:n4 .
+ex:n11 schema:mentions ex:n26 .
+ex:n12 schema:mentions ex:n10 .
+ex:n12 schema:mentions ex:n26 .
+ex:n13 schema:mentions ex:n26 .
+ex:n13 schema:mentions ex:n27 .
+ex:n15 schema:mentions ex:n26 .
+ex:n16 schema:mentions ex:n15 .
+ex:n16 schema:mentions ex:n26 .
+ex:n17 schema:mentions ex:n26 .
+ex:n18 schema:mentions ex:n26 .
+ex:n20 schema:mentions ex:n26 .
+ex:n21 schema:mentions ex:n4 .
+ex:n21 schema:mentions ex:n26 .
+ex:n22 schema:mentions ex:n4 .
+ex:n22 schema:mentions ex:n26 .
+ex:n22 schema:mentions ex:n27 .
+ex:n23 schema:mentions ex:n1 .
+ex:n23 schema:mentions ex:n26 .
+ex:n24 schema:mentions ex:n25 .
+ex:n24 schema:mentions ex:n26 .
+ex:n25 schema:mentions ex:n26 .
+ex:n26 schema:mentions ex:n15 .
+ex:n27 schema:mentions ex:n26 .
+ex:n28 schema:mentions ex:n26 .
+ex:n29 schema:mentions ex:n4 .
+ex:n30 schema:mentions ex:n4 .
+ex:n35 schema:mentions ex:n4 .

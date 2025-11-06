@@ -121,5 +121,5 @@ Dieses Projekt verbindet **mehrere Wissensgraphen (Neo4j)** mit einem **lokalen 
 1.  **Ausführung starten:**
     * Das System nimmt Fragen aus `100questions.jsonl` und schreibt die Ergebnisse als JSONL-Datei.
     ```
-    python3 run_gold_eval.py --out-jsonl "out.jsonl"
+    python3 run_gold_eval.py --out-jsonl "100questionsOUT.jsonl"
     ```

@@ -123,3 +123,16 @@ Dieses Projekt verbindet **mehrere Wissensgraphen (Neo4j)** mit einem **lokalen 
     ```
     python3 run_gold_eval.py --out-jsonl "100questionsOUT.jsonl"
     ```
+    
+---
+
+## 5. ℹ️ Hinweis zu Modi-Bezeichnungen
+
+In diesem Projekt werden die Modi in Code, Logs und Abbildungen teilweise mit leicht abweichenden Kurzbezeichnungen geführt. Die Zuordnung ist wie folgt:
+
+- `llm-base` entspricht `llm`
+- `llm-a` entspricht `llm-aug`
+- `rag` entspricht `kg-r`
+- `rag-aug` entspricht `kg-rag`
+
+Bitte berücksichtigen Sie diese Mapping-Tabelle beim Vergleich von README, Code, Evaluationsskripten und Abbildungen.

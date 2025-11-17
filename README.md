@@ -16,18 +16,37 @@ Dieses Projekt verbindet **mehrere Wissensgraphen (Neo4j)** mit einem **lokalen 
 ### Installation und Setup
 
 1.  **Neo4j Desktop herunterladen:**
-    * `https://neo4j.com/download`
+    * [https://neo4j.com/download](https://neo4j.com/download)
 2.  **Instanz und Datenbanken anlegen:**
     * Erstellen Sie in Neo4j Desktop eine neue Instanz/DBMS und legen Sie ein **Passwort** fest.
-    * Erstellen Sie in dieser Instanz die drei Datenbanken: `kgraphdata`, `mtfdata`, `naveldata`.
+    * Erstellen Sie in dieser Instanz die drei Datenbanken: `kgraphdata` (für LPD Daten), `mtfdata`, `naveldata`.
 3.  **Plugins installieren:**
     * In der Instanz unter **Plugins** **APOC** aktivieren.
 
 #### 🛠️ Detail: n10s Plugin (neosemantics) installieren
 
-1.  **Im Plugins-Tab** Ihrer Instanz das Plugin **"neosemantics (n10s)"** suchen und installieren.
-2.  *Alternativ:* Laden Sie die kompatible `.jar` Datei von der n10s-Seite herunter und kopieren Sie diese in den **`plugins`**-Ordner Ihrer Instanz.
-3.  Starten Sie die DBMS-Instanz neu.
+1.  **Neosemantics-JAR herunterladen:**
+    * Laden Sie die aktuelle Version von der Releases-Seite herunter:  
+      [https://github.com/neo4j-labs/neosemantics/releases](https://github.com/neo4j-labs/neosemantics/releases)
+    * Speichern Sie die `.jar`-Datei lokal ab.
+
+2.  **JAR in den Plugins-Ordner der Instanz kopieren:**
+    * In Neo4j Desktop bei Ihrer **DBMS-Instanz** auf die **drei Punkte (`…`)** klicken.
+    * **Open Folder → Plugins** wählen.
+    * Die heruntergeladene `neosemantics-…​.jar` in diesen `plugins`-Ordner kopieren.
+
+3.  **Neo4j-Konfiguration (neo4j.conf) für APOC und n10s anpassen:**
+    * Erneut bei der gleichen Instanz auf die **drei Punkte (`…`)** klicken.
+    * **Open → neo4j.conf** (bzw. Konfiguration öffnen) wählen.
+    * Sicherstellen, dass folgende Einträge vorhanden sind (ggf. ergänzen oder anpassen):
+
+      ```properties
+      dbms.security.procedures.unrestricted=apoc.*,n10s.*
+      dbms.security.procedures.allowlist=apoc.*,n10s.*
+      ```
+
+4.  **DBMS-Instanz neu starten**, damit APOC und n10s aktiv sind.
+
 
 ### Konfiguration und Datenimport
 
@@ -39,6 +58,7 @@ Dieses Projekt verbindet **mehrere Wissensgraphen (Neo4j)** mit einem **lokalen 
     FOR (r:Resource)
     REQUIRE r.uri IS UNIQUE;
     ```
+
 2.  **n10s konfigurieren:**
     ```cypher
     CALL n10s.graphconfig.init({
@@ -48,6 +68,7 @@ Dieses Projekt verbindet **mehrere Wissensgraphen (Neo4j)** mit einem **lokalen 
       handleMultival  : "ARRAY"
     });
     ```
+
 3.  **TTL importieren:**
     * **Achtung: Pfad anpassen!**
     ```cypher
@@ -65,10 +86,10 @@ Dieses Projekt verbindet **mehrere Wissensgraphen (Neo4j)** mit einem **lokalen 
 ### Installation und Start
 
 1.  **Ollama herunterladen:**
-    * `https://ollama.com/download`
+    * [https://ollama.com/download](https://ollama.com/download)
 2.  **Ollama-Server starten:**
     * Öffnen Sie ein Terminal und führen Sie aus:
-        ```
+        ```bash
         ollama serve
         ```
     * Der Dienst läuft auf `http://127.0.0.1:11434` und muss **im Hintergrund aktiv** sein.
@@ -77,12 +98,12 @@ Dieses Projekt verbindet **mehrere Wissensgraphen (Neo4j)** mit einem **lokalen 
 
 1.  **Modell herunterladen:**
     * In einem zweiten Terminal:
-        ```
+        ```bash
         ollama pull llama3.2:3b-instruct-q4_0
         ```
 2.  **Funktionstest:**
     * Starten Sie das Modell kurz:
-        ```
+        ```bash
         ollama run llama3.2:3b-instruct-q4_0
         ```
 
@@ -94,21 +115,39 @@ Dieses Projekt verbindet **mehrere Wissensgraphen (Neo4j)** mit einem **lokalen 
 
 1.  **Neo4j-Verbindungsdaten anpassen:**
     * Öffnen Sie die Datei **`kgadapterv2.py`** und passen Sie `NEO4J_URI`, `NEO4J_USER`, `NEO4J_PASSWORD` sowie die Datenbank-Namen an Ihre Installation an.
-2.  **Python-Umgebung vorbereiten:**
-    * Installieren Sie **Python 3.13.7**.
+
+2.  **Python-Umgebung vorbereiten (empfohlen im Ordner `llm-integration/`):**
+    * Installieren Sie **Python 3.13**.
+    * Wechseln Sie in den Projektordner:
+      ```bash
+      cd llm-integration
+      ```
+
     * Erstellen und aktivieren Sie optional eine virtuelle Umgebung:
-        ```
-        python3 -m venv venv
-        source venv/bin/activate
-        ```
+
+      **macOS / Linux:**
+      ```bash
+      python -m venv venv
+      source venv/bin/activate
+      ```
+
+      **Windows (CMD):**
+      ```bat
+      python -m venv venv
+      venv\Scripts\activate
+      ```
+
+      *(Hinweis: Unter Windows PowerShell kann die Aktivierung z.B. mit `.\venv\Scripts\Activate.ps1` erfolgen.)*
+
 3.  **Pakete installieren:**
-    ```
+    ```bash
     pip install neo4j
     pip install requests
     ```
+
 4.  **Adapter testen:**
     * Führen Sie das Script aus, um die Verbindung zu prüfen:
-        ```
+        ```bash
         python kgadapterv2.py "TESTFRAGE ?"
         ```
 
@@ -120,10 +159,10 @@ Dieses Projekt verbindet **mehrere Wissensgraphen (Neo4j)** mit einem **lokalen 
 
 1.  **Ausführung starten:**
     * Das System nimmt Fragen aus `100questions.jsonl` und schreibt die Ergebnisse als JSONL-Datei.
+    ```bash
+    python run_gold_eval.py --out-jsonl "100questionsOUT.jsonl"
     ```
-    python3 run_gold_eval.py --out-jsonl "100questionsOUT.jsonl"
-    ```
-    
+
 ---
 
 ## 5. ℹ️ Hinweis zu Modi-Bezeichnungen
